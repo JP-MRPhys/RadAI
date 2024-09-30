@@ -1,4 +1,4 @@
-from converstion import LLM
+from LLMS import LLM
 from flask import Flask, request, jsonify
 
 llm=LLM(model_name='llama3.1')
@@ -21,6 +21,7 @@ def extract_keywords():
         })
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
+    
 
 # Summary generation endpoint
 @app.route('/summary', methods=['POST'])
@@ -43,6 +44,23 @@ def generate_summary():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
+# Keyword extraction endpoint
+@app.route('/chatbot', methods=['POST'])
+def extract_keywords():
+    try:
+        # Get question from request body
+        data = request.get_json()
+        question = data['text']
+        
+        # 
+        answer = llm.chat(question)
+        
+        return jsonify({
+            'status': 'success',
+            'answer': answer
+        })
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 
 

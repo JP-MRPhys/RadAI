@@ -2,8 +2,8 @@
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
-
 from unstructured.partition.pdf import partition_pdf
+
 def read_pdf_text_and_tables(filename):
 
 

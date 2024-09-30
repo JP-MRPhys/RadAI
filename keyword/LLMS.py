@@ -26,14 +26,30 @@ class LLM:
         Answer:"""
         self.prompt_keyword = PromptTemplate(template=self.template2, input_variables=["text"])
         self.keyword_chain =  self.prompt_keyword | self.llm
+        
+        self.chatbot=self.create_vector_QA()
 
+         
+    def create_vector_QA(self, vector_store=None):
 
+        if vector_store is not None:
+            qa_chain = RetrievalQA.from_chain_type(llm=self.llm, chain_type="chatbot", retriever=vector_store)
+        else:
+            qa_chain =RetrievalQA.from_chain_type(llm=self.llm, chain_type="chatbot", retriever=None)
+        
+        return qa_chain
+
+    def get_QA(self, question):
+        return self.chatbot.invoke(question)
 
     def get_summary(self, text):
         return self.summarize_chain.invoke(text)
     
     def get_keywords(self, text):
         return self.keyword_chain.invoke(text)
+    
+    def chat(self,question):
+        return self.chatbot(question)
     
 
 class data:
@@ -102,12 +118,12 @@ if __name__ == '__main__':
     """
     
 
-    file='/Users/njp60/Downloads/test.PDF'
+    file='~/Downloads/test.PDF'
     daily_data=data(file_path=file)
     vector_store=daily_data.create_vector_store()
 
     qa_chain = RetrievalQA.from_chain_type(llm=test.llm, chain_type="stuff", retriever=vector_store)
-    ans=qa_chain.invoke("what does Adani port do and how is it expanding as per the document")
+    ans=qa_chain.invoke("Ask me a valid question")
     print(ans)
 
     
