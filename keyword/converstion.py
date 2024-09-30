@@ -11,17 +11,13 @@ from langchain_huggingface import HuggingFaceEmbeddings
 class LLM:
     def __init__(self, model_name='llama3.1') -> None:
 
-        self.tempate= """
-            You are an Financial analyst, provide a summary of the text below.
-            text: {text}
-        Answer:"""
 
-        #self.prompt = PromptTemplate(template=self.template, input_variables=["text"])
         self.llm=Ollama(model=model_name)
 
         self.template = """You are an intelligent chatbot to help summary of the medical report
         text: {text}
         Answer:"""
+
         self.prompt_summary = PromptTemplate(template=self.template, input_variables=["text"])
         self.summarize_chain =  self.prompt_summary | self.llm
 
@@ -30,6 +26,8 @@ class LLM:
         Answer:"""
         self.prompt_keyword = PromptTemplate(template=self.template2, input_variables=["text"])
         self.keyword_chain =  self.prompt_keyword | self.llm
+
+
 
     def get_summary(self, text):
         return self.summarize_chain.invoke(text)
