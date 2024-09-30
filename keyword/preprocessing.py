@@ -24,5 +24,5 @@ def read_pdf_text_and_tables(filename):
 
 if __name__ == '__main__':
 
-        filename="/Users/njp60/Documents/Noegen.pdf"
+        filename="~/Documents/test.pdf"
         read_pdf_text_and_tables(filename=filename)
